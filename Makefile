@@ -1,4 +1,4 @@
-version_tag = `scm-status | jq --raw-output '.tags[0]' | cut -c 2-`
+version_tag = `git describe --abbrev=0 --tags`
 
 default:
 	docker build -t jongschneider/wait-for-elasticsearch .
