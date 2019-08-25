@@ -1,0 +1,13 @@
+# github.com/jimmysawczuk/try v1.0.0
+github.com/jimmysawczuk/try
+# github.com/mailru/easyjson v0.0.0-20190626092158-b2ccc519800e
+github.com/mailru/easyjson
+github.com/mailru/easyjson/jlexer
+github.com/mailru/easyjson/jwriter
+github.com/mailru/easyjson/buffer
+# github.com/olivere/elastic v6.2.23+incompatible
+github.com/olivere/elastic
+github.com/olivere/elastic/config
+github.com/olivere/elastic/uritemplates
+# github.com/pkg/errors v0.8.1
+github.com/pkg/errors
