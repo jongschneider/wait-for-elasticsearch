@@ -14,7 +14,7 @@ import (
 )
 
 // IngestGetPipelineService returns pipelines based on ID.
-// See https://www.elastic.co/guide/en/elasticsearch/reference/6.7/get-pipeline-api.html
+// See https://www.elastic.co/guide/en/elasticsearch/reference/6.8/get-pipeline-api.html
 // for documentation.
 type IngestGetPipelineService struct {
 	client        *Client
@@ -115,7 +115,11 @@ func (s *IngestGetPipelineService) Do(ctx context.Context) (IngestGetPipelineRes
 // IngestGetPipelineResponse is the response of IngestGetPipelineService.Do.
 type IngestGetPipelineResponse map[string]*IngestGetPipeline
 
+// IngestGetPipeline describes a specific ingest pipeline, its
+// processors etc.
 type IngestGetPipeline struct {
-	ID     string                 `json:"id"`
-	Config map[string]interface{} `json:"config"`
+	Description string                   `json:"description"`
+	Processors  []map[string]interface{} `json:"processors"`
+	Version     int64                    `json:"version,omitempty"`
+	OnFailure   []map[string]interface{} `json:"on_failure,omitempty"`
 }
