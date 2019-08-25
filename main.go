@@ -41,6 +41,8 @@ func main() {
 }
 
 func connectToElasticsearch(connectionString string) func() error {
+	timeout := 2 * time.Second
+
 	return func() error {
 		c, err := elastic.NewClient(
 			elastic.SetURL(connectionString),
@@ -52,11 +54,24 @@ func connectToElasticsearch(connectionString string) func() error {
 			return errors.Wrap(err, "failed to create elasticsearch client")
 		}
 
-		// Ping the Elasticsearch server to get e.g. the version number
-		_, _, err = c.Ping(connectionString).Do(context.Background())
-		if err != nil {
-			// Handle error
-			return errors.Wrap(err, "connect to elasticSearch")
+		ctx, cancel := context.WithDeadline(context.Background(), time.Now().Add(time.Second))
+		defer cancel()
+
+		doneCh := make(chan error)
+
+		go func() {
+			// Ping the Elasticsearch server to get e.g. the version number
+			_, _, err = c.Ping(connectionString).Do(ctx)
+			doneCh <- err
+		}()
+
+		select {
+		case <-time.After(timeout):
+			return errors.Wrap(err, "ping: elasticSearch")
+		case err := <-doneCh:
+			if err != nil {
+				return errors.Wrap(err, "ping: elasticSearch")
+			}
 		}
 
 		return nil
